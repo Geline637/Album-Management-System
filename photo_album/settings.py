@@ -12,28 +12,35 @@ environ.Env.read_env(BASE_DIR / ".env")
 
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
-ALLOWED_HOSTS = env.list(
-    "ALLOWED_HOSTS",
-    default=["localhost", "127.0.0.1"],
-)
-ALLOWED_HOSTS.append("album-management-system.onrender.com")
-ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
+# Dynamic ALLOWED_HOSTS setup
 ALLOWED_HOSTS = env.list(
     "ALLOWED_HOSTS",
     default=["localhost", "127.0.0.1"],
 )
 
-RENDER_EXTERNAL_HOSTNAME =  os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+# Add Render's dynamic hostname if available
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
+# Add specific Render domains
+ALLOWED_HOSTS.extend([
+    'album-management-system.onrender.com',
+    'photo-album-management-system-88tg.onrender.com',
+])
+
+# Remove duplicates while preserving order
+ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 CSRF_TRUSTED_ORIGINS = env.list(
     "CSRF_TRUSTED_ORIGINS",
-    default=["https://photo-album-management-system-88tg.onrender.com"],
+    default=[
+        "https://album-management-system.onrender.com",
+        "https://photo-album-management-system-88tg.onrender.com",
+    ],
 )
 
 INSTALLED_APPS = [
