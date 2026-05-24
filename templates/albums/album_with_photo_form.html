@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Create Album and Upload Photo{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Create Album and Upload Photo</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="button">Create Album + Upload Photo</button>
+        <a href="{% url 'albums:album-list' %}" class="button button-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

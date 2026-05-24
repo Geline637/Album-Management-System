@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: photo-album-app
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn photo_album.wsgi --log-file -
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: "False"
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: ALLOWED_HOSTS
+        value: "photo-album-management-system-88tg.onrender.com"
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://photo-album-management-system-88tg.onrender.com"
+        sync: false

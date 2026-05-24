@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Albums{% endblock %}
+{% block content %}
+<h1>Albums</h1>
+{% if albums %}
+<div class="grid">
+    {% for album in albums %}
+        <div class="card">
+            <h2><a href="{{ album.get_absolute_url }}">{{ album.title }}</a></h2>
+            <p>{{ album.description|truncatechars:120 }}</p>
+            <p><strong>Owner:</strong> {{ album.owner.username }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card">No albums are available yet.</div>
+{% endif %}
+{% endblock %}

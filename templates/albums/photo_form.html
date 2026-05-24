@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Edit Photo{% else %}Add Photo{% endif %}{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>{% if form.instance.pk %}Edit Photo{% else %}Add Photo{% endif %}</h1>
+    {% if album %}
+        <p><strong>Album:</strong> {{ album.title }}</p>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="button">Save Photo</button>
+        <a href="{% if album %}{{ album.get_absolute_url }}{% else %}{{ form.instance.album.get_absolute_url }}{% endif %}" class="button button-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

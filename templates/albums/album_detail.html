@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load album_tags %}
+{% block title %}{{ album.title }}{% endblock %}
+{% block content %}
+<article class="card">
+    <h1>{{ album.title }}</h1>
+    <p>{{ album.description }}</p>
+    <p><strong>Owner:</strong> {{ album.owner.username }}</p>
+    <div class="actions">
+        {% if user.is_authenticated and user.is_staff or user.is_authenticated and user|has_group:'album_admin' or user.is_authenticated and album.owner == user %}
+            <a href="{% url 'albums:album-update' album.pk %}" class="button">Edit Album</a>
+            <a href="{% url 'albums:album-delete' album.pk %}" class="button button-secondary">Delete Album</a>
+            <a href="{% url 'albums:photo-create' album.pk %}" class="button">Add Photo</a>
+        {% endif %}
+    </div>
+</article>
+{% if album.photos.all %}
+<div class="grid">
+    {% for photo in album.photos.all %}
+        <div class="card">
+            <a href="{% url 'albums:photo-detail' photo.pk %}">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="photo-thumb" />
+            </a>
+            <h3><a href="{% url 'albums:photo-detail' photo.pk %}">{{ photo.title }}</a></h3>
+            <p>{{ photo.caption|truncatechars:120 }}</p>
+            <p><strong>Uploaded:</strong> {{ photo.uploaded_at|date:'M d, Y' }}</p>
+            {% if user.is_authenticated and user.is_staff or user.is_authenticated and user|has_group:'album_admin' or user.is_authenticated and album.owner == user %}
+                <div class="actions">
+                    <a href="{% url 'albums:photo-update' photo.pk %}" class="button">Edit</a>
+                    <a href="{% url 'albums:photo-delete' photo.pk %}" class="button button-secondary">Delete</a>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card">No photos have been uploaded to this album yet.</div>
+{% endif %}
+{% endblock %}

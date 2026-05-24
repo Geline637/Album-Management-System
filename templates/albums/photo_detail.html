@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load album_tags %}
+{% block title %}{{ photo.title }}{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>{{ photo.title }}</h1>
+    <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="photo-thumb" />
+    <p>{{ photo.caption }}</p>
+    <p><strong>Album:</strong> <a href="{{ photo.album.get_absolute_url }}">{{ photo.album.title }}</a></p>
+    <p><strong>Uploaded:</strong> {{ photo.uploaded_at|date:'M d, Y' }}</p>
+    {% if user.is_authenticated and user.is_staff or user.is_authenticated and user|has_group:'album_admin' or user.is_authenticated and photo.album.owner == user %}
+        <div class="actions">
+            <a href="{% url 'albums:photo-update' photo.pk %}" class="button">Edit</a>
+            <a href="{% url 'albums:photo-delete' photo.pk %}" class="button button-secondary">Delete</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
