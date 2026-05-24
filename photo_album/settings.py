@@ -16,18 +16,18 @@ ALLOWED_HOSTS = env.list(
     "ALLOWED_HOSTS",
     default=["localhost", "127.0.0.1"],
 )
-ALLOWED_HOSTS.append("photo-album-management-system-88tg.onrender.com")
+ALLOWED_HOSTS.append("album-management-system.onrender.com")
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=["localhost", "127.0.0.1"],
+)
+
 RENDER_EXTERNAL_HOSTNAME =  os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'photo-album-management-system-88tg.onrender.com',  # Add this line
-]
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
