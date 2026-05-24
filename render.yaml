@@ -3,8 +3,9 @@ services:
     name: photo-album-app
     env: python
     plan: starter
-    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
     startCommand: gunicorn photo_album.wsgi --log-file -
+    preDeployCommand: python manage.py migrate
     envVars:
       - key: SECRET_KEY
         sync: false
