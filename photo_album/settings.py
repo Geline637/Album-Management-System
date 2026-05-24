@@ -18,6 +18,10 @@ ALLOWED_HOSTS = env.list(
 )
 ALLOWED_HOSTS.append("photo-album-management-system-88tg.onrender.com")
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+RENDER_EXTERNAL_HOSTNAME =  os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 ALLOWED_HOSTS = [
     'localhost',
